@@ -9,17 +9,19 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  ingredients: {
-    type: Object,
-    require: true
+  cookieType: {
+    type: String,
+    required: true
   },
+  ingredients: [{ type: String }],
   directions: {
     type: String,
-    require: true
+    required: true
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   }
 }, {
   timestamps: true
