@@ -1,5 +1,6 @@
 #!/bin/bash
 # EMAIL='' PASSWORD='' sh curl-scripts/auth/sign-up.sh
+
 # local host: http://localhost:4741
 # Heroku host: https://fathomless-brook-30890.herokuapp.com
 
