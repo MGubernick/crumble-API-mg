@@ -1,7 +1,9 @@
 #!/bin/bash
 # EMAIL='' PASSWORD='' sh curl-scripts/auth/sign-up.sh
+# local host: http://localhost:4741
+# Heroku host: https://fathomless-brook-30890.herokuapp.com
 
-API="http://localhost:4741"
+API="https://fathomless-brook-30890.herokuapp.com"
 URL_PATH="/sign-up"
 
 curl "${API}${URL_PATH}" \
