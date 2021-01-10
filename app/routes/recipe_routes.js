@@ -61,14 +61,31 @@ router.get('/recipes', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-// SHOW (one recipe owned by user)
-// GET /recipes/:id
+// SHOW (one recipe owned by user - will then allow update)
+// GET /recipes/any/:id
 
 router.get('/recipes/:id', requireToken, (req, res, next) => {
   // get the id
   const id = req.params.id
   // find the one recipe based on the id & owner (should only find recipes by this user)
   Recipe.findOne({ _id: id, owner: req.user._id })
+  // populate the owner field with the id and email only
+    .populate('owner', '_id email')
+    // handle any 404 erros
+    .then(handle404)
+    .then(recipe => {
+      res.status(200).json({ recipe: recipe })
+    })
+    .catch(next)
+})
+
+// SHOW (one recipe owned by anyone - will not allow update)
+// GET/recipes/:id
+router.get('/recipes/any/:id', requireToken, (req, res, next) => {
+  // get the id
+  const id = req.params.id
+  // find the one recipe based on the id & owner (should only find recipes by this user)
+  Recipe.findOne({ _id: id })
   // populate the owner field with the id and email only
     .populate('owner', '_id email')
     // handle any 404 erros
