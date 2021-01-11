@@ -136,6 +136,8 @@ router.patch('recipes/like/:id', requireToken, removeBlanks, (req, res, next) =>
   Recipe.findById(id)
     .then(handle404)
     .then(recipe => {
+      requireOwnership(req, recipe)
+
       return recipe.updateOne(recipeData)
     })
     .then(recipe => {
