@@ -36,7 +36,7 @@ router.post('/recipes', requireToken, (req, res, next) => {
 })
 
 // IDEX All
-// GET /recipes
+// GET /recipes/all
 
 router.get('/recipes/all', requireToken, (req, res, next) => {
   Recipe.find()
@@ -51,6 +51,20 @@ router.get('/recipes/all', requireToken, (req, res, next) => {
 // GET /recipes
 
 router.get('/recipes', requireToken, (req, res, next) => {
+  // find the recipes that coorilate with the specific owner
+  Recipe.find({ owner: req.user._id })
+  // populate the owner field with only the id and email
+    .populate('owner', '_id email')
+    .then(recipe => {
+      res.status(200).json({ recipe: recipe })
+    })
+    .catch(next)
+})
+
+// INDEX for individual users liked recipes
+// GET /recipies/liked
+
+router.get('/recipes/favorites', requireToken, (req, res, next) => {
   // find the recipes that coorilate with the specific owner
   Recipe.find({ owner: req.user._id })
   // populate the owner field with only the id and email
@@ -124,20 +138,22 @@ router.patch('/recipes/:id', requireToken, removeBlanks, (req, res, next) => {
 })
 
 // update to save like button
-// PATCH /recipes/:id
+// PATCH /recipes/liked/:id
 
-router.patch('recipes/like/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/recipes/liked/:id', requireToken, removeBlanks, (req, res, next) => {
+  // get id
   const id = req.params.id
-
+  // get data from req - call it recipeData
   const recipeData = req.body.recipe
-
+  // remove the owner so that people cannot update the owner
   delete req.body.recipe.owner
 
+  // find the recipe you want to update
   Recipe.findById(id)
+  // handle any 404 errors if there is a problem with the ID
     .then(handle404)
+    // update the one recipe based on the new recipeData submitted
     .then(recipe => {
-      requireOwnership(req, recipe)
-
       return recipe.updateOne(recipeData)
     })
     .then(recipe => {
