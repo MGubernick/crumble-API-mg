@@ -123,6 +123,27 @@ router.patch('/recipes/:id', requireToken, removeBlanks, (req, res, next) => {
     .catch(next)
 })
 
+// update to save like button
+// PATCH /recipes/:id
+
+router.patch('recipes/like/:id', requireToken, removeBlanks, (req, res, next) => {
+  const id = req.params.id
+
+  const recipeData = req.body.recipe
+
+  delete req.body.recipe.owner
+
+  Recipe.findById(id)
+    .then(handle404)
+    .then(recipe => {
+      return recipe.updateOne(recipeData)
+    })
+    .then(recipe => {
+      res.status(200).json({ recipe: recipeData })
+    })
+    .catch(next)
+})
+
 // DELETE
 // DELETE /recipes/:id
 
