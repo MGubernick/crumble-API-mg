@@ -66,7 +66,7 @@ router.get('/recipes', requireToken, (req, res, next) => {
 
 router.get('/recipes/favorites', requireToken, (req, res, next) => {
   // find the recipes that coorilate with the specific owner
-  Recipe.find({ owner: req.user._id })
+  Recipe.find()
   // populate the owner field with only the id and email
     .populate('owner', '_id email')
     .then(recipe => {
