@@ -87,7 +87,9 @@ router.get('/recipes/:id', requireToken, (req, res, next) => {
     .populate('owner', '_id email')
     // handle any 404 erros
     .then(handle404)
+
     .then(recipe => {
+      requireOwnership(req, recipe)
       res.status(200).json({ recipe: recipe })
     })
     .catch(next)
@@ -104,6 +106,7 @@ router.get('/recipes/any/:id', requireToken, (req, res, next) => {
     .populate('owner', '_id email')
     // handle any 404 erros
     .then(handle404)
+
     .then(recipe => {
       res.status(200).json({ recipe: recipe })
     })
