@@ -57,6 +57,7 @@ The second project for the course is to build a full stack application.  This ap
 - cors
 - Crumble Front-End
 - Google
+- Heroku
 
 ## Unsolved Problems:
 - The problem that I am currently working on is a part of my Find My Favorites function.  Currently, this will display all of the recipes that have the 'liked' key's value set to 'true'.  This part works great but I want to only select the liked recipes by the specific user.
